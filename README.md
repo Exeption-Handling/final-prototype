@@ -1,8 +1,25 @@
 # final-prototype
-##
+## Team Members
+- 문서영 (Team Lead, Frontend)
+- 박성웅 (Backend)
+- 천지성 (Data, Idea)
+- 전용준 (Data)
 
-## 구조 및 역할
+## Master Node
+- 문서영
 
-- `interface/`: 프론트엔드 (담당자: @frontend-user)
-- `backend/`: 백엔드 서버 (담당자: @backend-user)
-- `data/`: AI 모델 처리 및 전처리 코드 (담당자: @ai-user)
+##프로젝트 설명 
+- 유저의 지역 날씨 확인가능
+- 
+
+## 담당역할
+- 프론트앤드 설계 및 구현
+  - 메인 화면, 개인 화면, 게임 화면
+    
+## 사용 기술
+-HTML
+-css
+-Javascript
+
+## 실행 방법
+-서버 연 이후, 상시 사용가능
