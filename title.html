@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>날씨 메인 화면</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(to bottom, #e6f7ff, #ffffff);
+      font-size: 110%;
+    }
+
+    header, footer {
+      height: 10%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      background-color: #d5f0fa;
+      color: #2a4d69;
+      font-weight: bold;
+      font-size: 1.32em;
+      position: relative;
+    }
+
+    .login-form {
+      position: absolute;
+      top: 10px;
+      right: 110px;
+      display: flex;
+      gap: 5px;
+      transform: scale(0.81);
+    }
+
+    .login-form input[type="text"], .login-form input[type="password"] {
+      padding: 5px;
+      font-size: 1em;
+    }
+
+    .login-form button {
+      padding: 5px 10px;
+      background-color: #0288d1;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    .signup-form {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      display: flex;
+      gap: 5px;
+      transform: scale(0.81);
+    }
+
+    .signup-form button {
+        padding: 5px 10px;
+      background-color: #0288d1;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    .logout-form {
+      position: absolute;
+      top: 10px;
+      right: 110px;
+      display: flex;
+      gap: 5px;
+      transform: scale(0.81);
+    }
+
+    .logout-form button {
+        padding: 5px 10px;
+      background-color: #0288d1;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+
+    main {
+      height: 80%;
+      display: flex;
+      background-color: #f0fbff;
+      border-top: 2px solid #b3e0ff;
+      border-bottom: 2px solid #b3e0ff;
+    }
+
+    .left-panel, .center-panel, .right-panel {
+      height: 100%;
+      padding: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .left-panel {
+      width: 20%;
+      background-color: #e1f5fe;
+      cursor: pointer;
+      border-right: 1px solid #b3e5fc;
+    }
+
+    .left-panel:hover {
+      width: 30%;
+      background-color: #b3e5fc;
+    }
+
+    .center-panel {
+      width: 60%;
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-left: 1px solid #b3e5fc;
+      border-right: 1px solid #b3e5fc;
+      padding: 20px;
+    }
+
+    .weather-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .weather-row img {
+      width: 100px;
+      height: 100px;
+      margin-right: 20px;
+    }
+
+    .weather-row p {
+      margin: 3px 0;
+      font-size: 1.1em;
+      color: #333;
+      border-bottom: 1px dashed #87ceeb; /* 하늘색 밑줄 */
+    }
+
+    .time-weather {
+      display: flex;
+      justify-content: space-around;
+      width: 100%;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .time-weather p {
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #2a4d69;
+    }
+
+    .right-panel {
+      width: 20%;
+      background-color: #e0f7fa;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      border-left: 1px solid #b2ebf2;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .right-panel:hover {
+      width: 30%;
+      background-color: #b2ebf2;
+    }
+
+    .right-panel h3 {
+      color: #00796b;
+      font-size: 1.1em;
+    }
+
+    .right-panel p {
+      font-size: 1.1em;
+    }
+
+    button {
+      padding: 10px 15px;
+      margin: 8px;
+      background-color: #4fc3f7;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      font-size: 1em;
+    }
+
+    .green-btn {
+      background-color: #66bb6a;
+    }
+
+    .green-btn:hover {
+      color: transparent;
+    }
+
+    .green-btn:hover::before {
+      content: "🌱";
+      position: absolute;
+      font-size: 24px;
+      color: white;
+    }
+
+    .sun-btn:hover {
+      color: transparent;
+    }
+
+    .sun-btn:hover::before {
+      content: "☀️";
+      position: absolute;
+      font-size: 24px;
+      color: white;
+    }
+
+    button:hover:not(.green-btn):not(.sun-btn) {
+      background-color: #0288d1;
+    }
+    .left-panel h3 {
+        text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div id="currentDateTime">날짜와 시간 로딩 중...</div>
+    {% if token == 1 %}
+    <form class="logout-form">
+        <h3>{{user.Username}}님</h3>
+        <button onclick="alert('성공적으로 로그아웃되었습니다.')" type="submit" formaction="/logout/" formmethod="get">로그아웃</button>
+    </form>
+    {% else %}
+    <form class="login-form">
+      <button type="submit" formaction="/login/" formmethod="get">로그인</button>
+    </form>
+    {% endif %}
+    <form class="signup-form">
+        <button type="submit" formaction="/sign_up/" formmethod="get">회원가입</button>
+    </form>
+    </header>
+    <main>
+    <div class="left-panel" onclick="location.href='https://data.kma.go.kr/data/gaw/selectGHGsRltmList.do';">
+      <h3>지구 숨 지수</h3>
+      <img src="/images/tenki_mark01_hare.png" alt="지구 숨 지수" style="width:100%;">
+      <h3>CO₂ : 428</h3>
+      <h3>CH₄ : 2024.8</h3>
+      <h3>N₂O : 339</h3>
+      <h3>Earth Score : '574.51</h3>
+      <br>
+      <h5>계산식 : (CO₂) + (0.001 x (CH₄) x 28) + (0.001 x (N₂O) x 273)</h5>
+    </div>
+    <div class="center-panel">
+      <h2>오늘의 날씨</h2>
+      <div class="weather-row">
+        {% if today.icon == 0 %}
+        <img src="/images/tenki_mark01_hare.png" alt="오늘의 날씨 아이콘" style="width:400px; height:400px;">
+        {% elif today.icon == 1 %}
+        <img src="/images/tenki_mark02_kurmoriame.png" alt="오늘의 날씨 아이콘" style="width:400px; height:400px;">
+        {% elif today.icon == 2 %}
+        <img src="/images/bolt.png" alt="오늘의 날씨 아이콘" style="width:400px; height:400px;">
+        {% elif today.icon == 3 %}
+        <img src="/images/tenki_mark08_yuki.png" alt="오늘의 날씨 아이콘" style="width:400px; height:400px;">
+        {% elif today.icon == 4 %}
+        <img src="/images/tenki_mark03_gouu.png" alt="오늘의 날씨 아이콘" style="width:400px; height:400px;">
+        {% elif today.icon == 5 %}
+        <img src="/images/tenki_mark05_kumori.png" alt="오늘의 날씨 아이콘" style="width:400px; height:400px;">
+        {% elif today.icon == 6 %}
+        <img src="/images/tenki_mark05_kumori.png" alt="오늘의 날씨 아이콘" style="width:400px; height:400px;">
+        {% elif today.icon == 7 %}
+        <img src="/images/tenki_mark10_taifuu.png" alt="오늘의 날씨 아이콘" style="width:400px; height:400px;">
+        {% endif %}
+        <div>
+          <p>기온: {{ today.temp }}℃</p>
+          <p>습도: {{ today.humidity }}%</p>
+          <p>풍속: {{ today.wind }}m/s</p>
+          <p>구름: {{ today.cloud }}0%</p>
+        </div>
+      </div>
+    </div>
+    <div class="right-panel" onclick="location.href='/weekly_weather/';">
+      <h3 id="tomorrowDate">내일</h3>
+        {% if d7[1] == 0 %}
+        <img src="/images/tenki_mark01_hare.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
+        {% elif d7[1] == 1 %}
+        <img src="/images/tenki_mark02_kurmoriame.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
+        {% elif d7[1] == 2 %}
+        <img src="/images/bolt.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
+        {% elif d7[1] == 3 %}
+        <img src="/images/tenki_mark08_yuki.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
+        {% elif d7[1] == 4 %}
+        <img src="/images/tenki_mark03_gouu.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
+        {% elif d7[1] == 5 %}
+        <img src="/images/tenki_mark05_kumori.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
+        {% elif d7[1] == 6 %}
+        <img src="/images/tenki_mark05_kumori.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
+        {% elif d7[1] == 7 %}
+        <img src="/images/tenki_mark10_taifuu.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
+        {% endif %}
+      <p>최저 기온: {{ d7[2] }}℃</p>
+      <p>최고 기온: {{ d7[3] }}℃</p>
+      <button class="sun-btn">이번주 날씨 보기</button>
+    </div>
+  </main>
+  <footer>
+        <form action="/mypage/" method="get">
+            <button class="green-btn">마이페이지</button>
+            {% if no_permission %}
+            <script>
+                alert("로그인 후 이용 가능합니다.");
+                window.location.href = "/login/";
+            </script>
+            {% endif %}
+        </form>
+        <form action="/board/" method="get">
+            <button class="green-btn">그린게시판</button>
+        </form>
+  </footer>
+  <script>
+    function updateTime() {
+      const now = new Date();
+      const currentDateTime = now.toLocaleString('ko-KR');
+      document.getElementById('currentDateTime').textContent = currentDateTime;
+
+      const hour = now.getHours();
+      document.getElementById('time1').textContent = ((hour + 2) % 24) + '시';
+      document.getElementById('time2').textContent = ((hour + 4) % 24) + '시';
+      document.getElementById('time3').textContent = ((hour + 6) % 24) + '시';
+      document.getElementById('time4').textContent = ((hour + 8) % 24) + '시';
+
+      const tomorrow = new Date(now);
+      tomorrow.setDate(now.getDate() + 1);
+      const tomorrowStr = tomorrow.getMonth() + 1 + '월 ' + tomorrow.getDate() + '일';
+      document.getElementById('tomorrowDate').textContent = '내일 (' + tomorrowStr + ')';
+    }
+
+    updateTime();
+    setInterval(updateTime, 1000);
+  </script>
+</body>
+</html>

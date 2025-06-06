@@ -1,4 +1,4 @@
-# final-prototype
+# interface
 ## Team Members
 - 문서영 (Team Lead, Frontend)
 - 박성웅 (Backend)
@@ -9,8 +9,6 @@
 - 문서영
 
 ##프로젝트 설명 
-- 유저의 지역 날씨 확인가능
-- 
 
 ## 담당역할
 - 프론트앤드 설계 및 구현

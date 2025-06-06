@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>이번주 날씨</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(to bottom, #e6f7ff, #ffffff);
+      padding: 20px;
+      font-size: 110%;
+    }
+
+    h1 {
+      text-align: center;
+      color: #2a4d69;
+      margin-bottom: 20px;
+    }
+
+    .week-weather {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .day-card {
+      background-color: #ffffff;
+      border: 2px solid #b3e5fc;
+      border-radius: 10px;
+      padding: 15px;
+      width: 120px;
+      text-align: center;
+      box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .day-card h3 {
+      color: #0288d1;
+      margin-bottom: 5px;
+    }
+
+    .day-card small {
+      font-size: 0.8em;
+      color: #888;
+    }
+
+    .day-card img {
+      width: 60px;
+      height: 60px;
+      margin: 10px 0;
+    }
+
+    .day-card p {
+      margin: 4px 0;
+      font-size: 0.95em;
+    }
+    .back-button {
+            position: fixed;       /* 항상 왼쪽 상단에 고정 */
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background-color: transparent;
+            color: #0288d1;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: transform 0.2s;
+            z-index: 999;          /* 다른 요소 위에 뜨도록 */
+        }
+
+        .back-button:hover {
+            transform: scale(1.2);
+        }
+  </style>
+</head>
+<body>
+  <form action="/" method="get">
+    <button class="back-button" title="메인으로 돌아가기">←</button>
+  </form>
+
+  <h1>이번주 날씨</h1>
+  <div class="week-weather" id="weekWeather">
+    {% for i in range(7) %}
+    <div class="day-card">
+      <h3>{{ weekday_names[i] }}</h3>
+      <small>{{ dates[i] }}</small>
+      
+      {% if d7[1 + i*4] == 0 %}
+      <img src="/images/tenki_mark01_hare.png">
+      {% elif d7[1 + i*4] == 1 %}
+      <img src="/images/tenki_mark02_kurmoriame.png">
+      {% elif d7[1 + i*4] == 2 %}
+      <img src="/images/bolt.png">
+      {% elif d7[1 + i*4] == 3 %}
+      <img src="/images/tenki_mark08_yuki.png">
+      {% elif d7[1 + i*4] == 4 %}
+      <img src="/images/tenki_mark03_gouu.png">
+      {% elif d7[1 + i*4] == 5 %}
+      <img src="/images/tenki_mark05_kumori.png">
+      {% elif d7[1 + i*4] == 6 %}
+      <img src="/images/tenki_mark05_kumori.png">
+      {% elif d7[1 + i*4] == 7 %}
+      <img src="/images/tenki_mark10_taifuu.png">
+      {% endif %}
+      
+      <p>최저 기온: {{ d7[2 + i*4] }}℃</p>
+      <p>최고 기온: {{ d7[3 + i*4] }}℃</p>
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>

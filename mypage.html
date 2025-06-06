@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>마이페이지</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: linear-gradient(to bottom, #e0f7fa, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .button-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .menu-button {
+      position: relative;
+      width: 200px;
+      padding: 15px;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .menu-button:hover {
+      transform: scale(1.05);
+    }
+
+    .menu-button::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: -40px;
+      transform: translateY(-50%);
+      font-size: 22px;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .menu-button:hover::after {
+      opacity: 1;
+    }
+
+    .checklist {
+      background-color: teal;
+    }
+    .checklist:hover::after {
+      content: "\2600"; /* 빨간 햇님 */
+      color: red;
+    }
+
+    .plant-game, .plant-garden {
+      background-color: #66bb6a; /* 녹색 */
+    }
+    .plant-game:hover::after,
+    .plant-garden:hover::after {
+      content: "\1F331"; /* 새싹 */
+    }
+
+    .back {
+      background-color: #4fc3f7; /* 하늘색 */
+    }
+    .back:hover::after {
+      content: "\2601"; /* 구름 */
+      color: #0288d1;
+    }
+  </style>
+</head>
+<body>
+    {% if no_plants %}
+    <script>
+      alert("{{ no_plants }}");
+      window.location.href = "/mypage/";
+    </script>
+    {% endif %}
+    {% if game_strted %}
+    <script>
+      alert("{{ game_started }}");
+    </script>
+    {% endif %}
+    {% if game_error %}
+    <script>
+      alert("{{ game_error }}")
+    </script>
+    {% endif %}
+    {% if error_message %}
+    <script>
+      alert("로그인 후 사용할 수 있는 기능입니다.");
+      window.location.href = "/login/";
+    </script>
+    {% endif %}
+    {% if already_done %}
+    <script>
+      alert("{{ already_done }}");
+      window.location.href = "/mypage/";
+    </script>
+    {% endif %}
+  <div class="button-container">
+    <form action="/mypage/checklist/" method="get">
+      <button class="menu-button checklist">체크리스트</button>
+    </form>
+    <form action="/mypage/game/" method="get">
+      <button class="menu-button plant-game">식물 게임</button>
+    </form>
+    <form action="/mypage/garden/" method="get">
+      <button class="menu-button plant-garden">식물 정원</button>
+    </form>
+    <form action="/" method="get">
+      <button class="menu-button back">메인으로 돌아가기</button>
+    </form>
+  </div>
+</body>
+</html>

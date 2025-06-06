@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>글 수정</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #eaf5ea;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #ffffff;
+            border: 2px solid #a3d9a5;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #2e7d32;
+        }
+        .post-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+        .post-form input, .post-form textarea {
+            padding: 10px;
+            border: 1px solid #a3d9a5;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .post-form button {
+            background-color: #66bb6a;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .post-form button:hover {
+            background-color: #4caf50;
+        }
+        .post {
+            border-bottom: 1px solid #d0e8d0;
+            padding: 15px 0;
+        }
+        .post h3 {
+            margin: 0;
+            color: #2e7d32;
+        }
+        .post p {
+            margin: 5px 0 0 0;
+            color: #555;
+        }
+        .back-button {
+            position: fixed;       /* 항상 왼쪽 상단에 고정 */
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            background-color: transparent;
+            color: #0288d1;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            transition: transform 0.2s;
+            z-index: 999;          /* 다른 요소 위에 뜨도록 */
+        }
+
+        .back-button:hover {
+            transform: scale(1.2);
+        }
+
+    </style>
+</head>
+<body>
+    <form action="/" method="get">
+      <button class="back-button" title="메인화면으로 돌아가기">←</button>
+  </form>  
+
+    <div class="container">
+        <h1>그린 게시판</h1>
+
+        <form action="/board/modify/process/{{post.id}}" method="post">
+            <input type="hidden" name="_method" value="modify">
+            <div class="post-form">
+                <input type="text" name="title" placeholder="제목" required>
+                <textarea name="content" rows="4" placeholder="내용을 입력하세요..." required></textarea>
+                <button type="submit">글 수정</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

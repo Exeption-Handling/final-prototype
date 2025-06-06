@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>체크리스트</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #f5fff5;
+      padding: 20px;
+    }
+
+    .user-section {
+      display: flex;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .user-photo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 20px;
+    }
+
+    .user-photo img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    /* .level-animation {
+      width: 120px;
+      height: 120px;
+      margin-top: 10px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    } */
+
+    .user-info {
+      flex: 1;
+    }
+
+    .username {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .score-title {
+      font-size: 18px;
+      display: inline-block;
+    }
+
+    .today-score {
+      font-size: 40px;
+      font-weight: bold;
+      color: #2e8b57;
+      margin-left: 15px;
+    }
+
+    .survey {
+      margin-top: 20px;
+    }
+
+    .survey-form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .survey-column {
+      flex: 1;
+      min-width: 300px;
+    }
+
+    .survey-column p {
+      margin: 10px 0 4px;
+    }
+
+    .radio-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 20px;
+    }
+
+    .radio-group label {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .radio-group input[type="radio"] {
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #4caf50;
+      border-radius: 50%;
+      margin-right: 10px;
+      position: relative;
+    }
+
+    .radio-group input[type="radio"]:checked::before {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 8px;
+      height: 8px;
+      background-color: #4caf50;
+      border-radius: 50%;
+    }
+
+    .submit-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .green-btn {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .green-btn:hover {
+      color: transparent;
+    }
+
+    .green-btn:hover::before {
+      content: "🌱";
+      position: absolute;
+      font-size: 12px;
+      color: white;
+    }
+  .back-button {
+      position: fixed;       /* 항상 왼쪽 상단에 고정 */
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      background-color: transparent;
+      color: #0288d1;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+      transition: transform 0.2s;
+      z-index: 999;          /* 다른 요소 위에 뜨도록 */
+  }
+
+  .back-button:hover {
+      transform: scale(1.2);
+  }
+  </style>
+</head>
+<body>
+  {% if no_permission %}
+  <script>
+    alert("로그인 후 이용할 수 있는 기능입니다.")
+    window.location.href = "/login/";
+  </script>
+  {% endif %}
+  <form action="/mypage/" method="get">
+    <button class="back-button" title="이전으로 돌아가기">←</button>
+  </form>
+
+  {% if token == 0 or token == 2 or token == 3 %}
+  <script>
+    alert("로그인 후 사용할 수 있는 기능입니다.");
+    window.location.href = "/login/";
+  </script>
+  {% endif %}
+  <div class="user-section">
+    <div class="user-photo">
+      <img src="/images/tenki_mark01_hare.png" alt="유저 사진" id="profileImage">
+      <!-- 레벨에 따라 동적으로 변경되는 이미지 -->
+      <form action="/mypage/garden/" method="get">
+        <button class="green-btn">식물정원 바로가기</button>
+      </form>
+      <form action="/mypage/game/" method="get">
+        <button class="green-btn">식물게임 바로가기</button>
+      </form>
+    </div>
+
+    <div class="user-info">
+      <div class="username">{{ user.Username }}, 오늘도 그린한 하루!</div>
+
+      <div class="survey">
+        <form id="surveyForm" class="survey-form" action="/mypage/checklist/process" method="post" onsubmit="return calculateScore()">
+          <input type="hidden" id="scoreInput" name="total_score">
+          <div class="survey-column">
+            <p>1. 교통수단</p>
+            <div class="radio-group">
+              <label><input type="radio" name="q1" value="100">자전거/도보</label>
+              <label><input type="radio" name="q1" value="90">전기차</label>
+              <label><input type="radio" name="q1" value="80">대중교통</label>
+              <label><input type="radio" name="q1" value="50">택시/렌터카</label>
+              <label><input type="radio" name="q1" value="0">자차(휘발유/디젤)</label>
+            </div>
+
+            <p>2. 고기 섭취 빈도</p>
+            <div class="radio-group">
+              <label><input type="radio" name="q2" value="100">전혀 먹지 않음</label>
+              <label><input type="radio" name="q2" value="70">1~2회</label>
+              <label><input type="radio" name="q2" value="40">3~4회</label>
+              <label><input type="radio" name="q2" value="15">5~6회</label>
+              <label><input type="radio" name="q2" value="0">매일</label>
+            </div>
+
+            <p>2-1. 고기 종류</p>
+            <div class="radio-group">
+              <label><input type="radio" name="q2_1" value="100">전혀 먹지 않음</label>
+              <label><input type="radio" name="q2_1" value="90">닭고기</label>
+              <label><input type="radio" name="q2_1" value="75">돼지고기</label>
+              <label><input type="radio" name="q2_1" value="60">소고기</label>
+              <label><input type="radio" name="q2_1" value="40">양고기</label>
+              <label><input type="radio" name="q2_1" value="0">모든 고기 종류</label>
+            </div>
+          </div>
+
+          <div class="survey-column">
+            <p>3. 커피 소비량</p>
+            <div class="radio-group">
+              <label><input type="radio" name="q3" value="100">전혀 안 마심</label>
+              <label><input type="radio" name="q3" value="50">주 1~2회</label>
+              <label><input type="radio" name="q3" value="25">하루 1~2잔</label>
+              <label><input type="radio" name="q3" value="0">하루 3잔 이상</label>
+            </div>
+
+            <p>4. 샤워 시간</p>
+            <div class="radio-group">
+              <label><input type="radio" name="q4" value="100">5분</label>
+              <label><input type="radio" name="q4" value="80">10분</label>
+              <label><input type="radio" name="q4" value="50">15~20분</label>
+              <label><input type="radio" name="q4" value="10">20분 이상</label>
+            </div>
+
+            <p>5. 재활용 및 친환경 행동 실천 정도</p>
+            <div class="radio-group">
+              <label><input type="radio" name="q5" value="100">항상 실천</label>
+              <label><input type="radio" name="q5" value="85">항상은 아니지만 자주 실천</label>
+              <label><input type="radio" name="q5" value="60">가끔 실천</label>
+              <label><input type="radio" name="q5" value="25">거의 실천하지 않음</label>
+              <label><input type="radio" name="q5" value="0">실천하지 않음</label>
+            </div>
+
+            <button type="submit" class="submit-btn">점수 업데이트</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function calculateScore(){
+      const form = document.getElementById('surveyForm');
+      const weights = {
+        q1 : 0.3,
+        q2 : 0.28,
+        q2_1 : 0.02,
+        q3 : 0.1,
+        q4 : 0.2,
+        q5 : 0.1
+      };
+
+      let score = 0;
+      for (const [key, weight] of Object.entries(weights)) {
+        const selected = form.querySelector(`input[name="${key}"]:checked`);
+        console.log(key, selected?.value);  // 어떤 항목이 선택되지 않았는지 확인
+        if (!selected) {
+          alert(`모든 질문에 답변을 선택해주세요. (${key} 누락됨)`);
+          return false;
+        }
+        score += parseInt(selected.value) * weight;
+      }
+
+      const roundedScore = Math.round(score);
+      document.getElementById('scoreInput').value = roundedScore;
+
+      return true;
+    }
+  </script>
+</body>
+</html>

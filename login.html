@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>로그인</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to bottom, #e6f7ff, #ffffff);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .signup-container {
+      background-color: #ffffff;
+      border: 2px solid #b3e5fc;
+      border-radius: 10px;
+      padding: 30px 40px;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 2px 2px 12px rgba(0,0,0,0.1);
+    }
+
+    .signup-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #0288d1;
+    }
+
+    .signup-container label {
+      display: block;
+      margin: 15px 0 5px;
+      color: #0277bd;
+    }
+
+    .signup-container input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #90caf9;
+      border-radius: 5px;
+      font-size: 1em;
+    }
+
+    .signup-container button {
+      margin-top: 20px;
+      width: 100%;
+      padding: 10px;
+      background-color: #4fc3f7;
+      border: none;
+      color: white;
+      font-size: 1.1em;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .signup-container button:hover {
+      background-color: #29b6f6;
+    }
+    .back-button {
+      position: fixed;       /* 항상 왼쪽 상단에 고정 */
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      background-color: transparent;
+      color: #0288d1;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+      transition: transform 0.2s;
+      z-index: 999;          /* 다른 요소 위에 뜨도록 */
+      }
+
+    .back-button:hover {
+    transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+    <form action="/", method="get">
+        <button class="back-button" title="메인화면으로 돌아가기">←</button>
+    </form>
+  <div class="signup-container">
+    <h2>로그인</h2>
+    {% if error_message %}
+    <script>
+        alert("{{ error_message }}")
+    </script>
+    {% endif %}
+    <form action="/login/process/" method="post">
+      <label for="userid">아이디</label>
+      <input type="text" id="user_id" name="user_id" required>
+
+      <label for="password">비밀번호</label>
+      <input type="password" id="password" name="password" required>
+
+      <button type="submit">로그인</button>
+    </form>
+  </div>
+</body>
+</html>

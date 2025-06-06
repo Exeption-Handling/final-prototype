@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>체크리스트 결과</title>
+  <style>
+    /* 기존 CSS 유지 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: #f5fff5;
+      padding: 40px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .user-section {
+      display: flex;
+      width: 100%;
+      max-width: 900px;
+    }
+
+    .user-photo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 20px;
+    }
+
+    .user-photo img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
+    }
+
+    .user-info {
+      flex: 1;
+    }
+
+    .username {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .back-button {
+        position: fixed;       /* 항상 왼쪽 상단에 고정 */
+        top: 20px;
+        left: 20px;
+        font-size: 24px;
+        background-color: transparent;
+        color: #0288d1;
+        border: none;
+        cursor: pointer;
+        padding: 5px 10px;
+        transition: transform 0.2s;
+        z-index: 999;          /* 다른 요소 위에 뜨도록 */
+    }
+
+    .back-button:hover {
+        transform: scale(1.2);
+    }
+
+    .content-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 50px;
+      padding: 30px 40px;
+      background-color: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .level-animation img {
+      width: 120px;
+      height: 120px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    .score-box {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .score-text {
+      font-size: 36px;
+      font-weight: bold;
+      color: #2e8b57;
+      margin-bottom: 10px;
+      min-width: 100px;
+      text-align: center;
+    }
+
+  /* 팝업 박스 스타일 */
+  .popup-container {
+    display: none; /* 기본적으로 숨김 */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 300px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    z-index: 1000;
+  }
+
+  .popup-container.active {
+    display: block; /* 활성화되면 표시 */
+  }
+
+  .popup-title {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+
+  .popup-content {
+    font-size: 18px;
+    color: #2e8b57;
+    margin-bottom: 20px;
+  }
+
+  .popup-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .popup-btn {
+    padding: 10px 20px;
+    font-size: 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.2s;
+  }
+
+  .popup-btn.confirm {
+    background-color: #4caf50;
+    color: white;
+  }
+
+  .popup-btn.cancel {
+    background-color: #f44336;
+    color: white;
+  }
+
+  .popup-btn:hover {
+    transform: scale(1.1);
+  }
+  </style>
+</head>
+<body>
+  <form action="/" method="get">
+    <button class="back-button" title="메인으로 돌아가기">←</button>
+  </form>
+
+  <div class="user-info">{{user.Username}}님, 오늘도 수고하셨어요!</div>
+
+  <div class="content-wrapper">
+    <div class="level-animation">
+      <img src="/images/level1.gif" alt="Level Animation" />
+    </div>
+    
+    <div class="score-box">
+      <div id="scoreText" class="score-text" data-start="{{ (user.Uscore - score + 100) % 100 }}" data-end="{{ user.Uscore }}">
+        0
+      </div> 
+      <div class="score-text">+{{score}}</div>
+    </div>
+  </div>
+  {% if levelup == 1 %}
+    <div id="levelupPopup" class="popup-container">
+    <div class="popup-title">레벨업 성공! 🎉</div>
+    {% if plant == "melee"%}
+    <img src="/images/cactus.png" alt="Cactus" style="width: 100px; height: 100px; margin-bottom: 10px;">
+    {% elif plant == "ranged"%}
+    <img src="/images/gunner.png" alt="Gunner" style="width: 100px; height: 100px; margin-bottom: 10px;">
+    {% elif plant == "shield"%}
+    <img src="/images/shield.png" alt="Shield" style="width: 100px; height: 100px; margin-bottom: 10px;">
+    {% endif %}
+    <div class="popup-content">{{ plant }}식물을(를) 획득했습니다!</div>
+    <div class="popup-buttons">
+      {% if append == False %}
+      <form action="/mypage/" method="get">
+        <button id="confirmBtn" class="popup-btn confirm" onclick="alert('이미 가지고 있는 식물입니다!')">획득</button>
+      </form>
+      {% elif append == True %}
+      <form action="/mypage/" method="get">
+        <button id="confirmBtn" class="popup-btn confirm" onclick="alert('식물을 휙득했습니다.')">휙득</button>
+      </form>
+      {% endif %}
+    </div>
+    </div>
+    <script>
+      // 팝업 박스 활성화
+      document.addEventListener("DOMContentLoaded", function() {
+        const popup = document.getElementById("levelupPopup");
+        if (popup) {
+          popup.classList.add("active");
+        }
+      });
+      </script>
+    {% endif %}
+  <script>
+    const scoreEl = document.getElementById("scoreText");
+    const startScore = Number(scoreEl.getAttribute("data-start"));
+    const endScore = Number(scoreEl.getAttribute("data-end"));
+    const delay = 30;
+
+    let current = startScore;
+
+    function updateScore() {
+      scoreEl.textContent = current;
+      if (current === endScore) return;
+      current = (current + 1) % 100;
+      setTimeout(updateScore, delay);
+    }
+
+    updateScore();
+  </script>
+  
+</body>
+</html>

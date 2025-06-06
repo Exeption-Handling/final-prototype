@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시판 글 목록</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5fff5;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h1 {
+      color: #2e8b57;
+      margin-bottom: 20px;
+    }
+
+    .board-container {
+      width: 100%;
+      max-width: 900px;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .board-header, .board-row {
+      display: flex;
+      padding: 12px;
+      border-bottom: 1px solid #eee;
+      align-items: center;
+    }
+
+    .board-header {
+      background-color: #e6f7e6;
+      font-weight: bold;
+    }
+
+    .board-row:hover {
+      background-color: #f0fff0;
+      cursor: pointer;
+    }
+
+    .col-id {
+      width: 10%;
+      text-align: center;
+    }
+
+    .col-title {
+      width: 60%;
+      padding-left: 10px;
+    }
+
+    .col-writer {
+      width: 15%;
+      text-align: center;
+    }
+
+    .col-date {
+      width: 15%;
+      text-align: center;
+    }
+
+    .write-button {
+      margin-top: 20px;
+      padding: 10px 20px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .back-button {
+      position: fixed;       /* 항상 왼쪽 상단에 고정 */
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      background-color: transparent;
+      color: #0288d1;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+      transition: transform 0.2s;
+      z-index: 999;          /* 다른 요소 위에 뜨도록 */
+      }
+
+    .back-button:hover {
+    transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  {% if no_permission %}
+  <script>
+    alert("로그인 후 사용할 수 있는 기능입니다.")
+    window.location.href = "/login/";
+  </script>
+  {% endif %}
+  <form action="/" method="get">
+      <button class="back-button" title="메인화면으로 돌아가기">←</button>
+  </form>  
+  <!-- 게시판 타이틀 -->
+  <h1>🌱 그린 게시판 글 목록</h1>
+
+  <!-- 게시글 목록 테이블 -->
+  <div class="board-container">
+    <div class="board-header">
+        <div class="col-id">번호</div>
+        <div class="col-title">제목</div>
+        <div class="col-writer">작성자</div>
+        <div class="col-date">작성일</div>
+    </div>
+
+    {% for post in posts %}
+    <div class="board-row" onclick="location.href='/board/{{ post.id }}';">
+        <div class="col-id">{{ post.id }}</div>
+        <div class="col-title">{{ post.title }}</div>
+        <div class="col-writer">{{ post.author }}</div>
+        <div class="col-date">{{ post.created_at }}</div> <!-- 임시 작성일 -->
+    </div>
+    {% else %}
+    <div class="board-row">
+        <div class="col-title" style="text-align:center; width:100%;">게시물이 없습니다!</div>
+    </div>
+    {% endfor %}
+  </div>
+
+    <!-- 게시글 샘플 목록 -->
+    <!-- <div class="board-row" onclick="location.href='view.html?id=1';">
+      <div class="col-id">1</div>
+      <div class="col-title">오늘 환경 보호 실천한 이야기</div>
+      <div class="col-writer">홍길동</div>
+      <div class="col-date">2025-05-26</div>
+    </div>
+    <div class="board-row" onclick="location.href='view.html?id=2';">
+      <div class="col-id">2</div>
+      <div class="col-title">텀블러 사용 후기 공유</div>
+      <div class="col-writer">김철수</div>
+      <div class="col-date">2025-05-25</div>
+    </div>
+    <div class="board-row" onclick="location.href='view.html?id=3';">
+      <div class="col-id">3</div>
+      <div class="col-title">일회용품 줄이기 캠페인 참여 후기</div>
+      <div class="col-writer">이영희</div>
+      <div class="col-date">2025-05-24</div>
+    </div> -->
+  <!-- </div> -->
+
+  <!-- 글쓰기 버튼 -->
+  <form action="/board/create/" method="get">  
+    <button class="write-button">✏️ 글쓰기</button>
+  </form>
+</body>
+</html>

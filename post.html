@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시글 보기</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5fff5;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .post-container {
+      width: 100%;
+      max-width: 800px;
+      background-color: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .post-title {
+      font-size: 26px;
+      font-weight: bold;
+      color: #2e8b57;
+      margin-bottom: 20px;
+    }
+
+    .author-info {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .author-info img {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+
+    .author-name {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .post-content {
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .action-btn {
+      padding: 8px 16px;
+      background-color: #4caf50;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .action-btn:hover {
+      background-color: #388e3c;
+    }
+    .back-button {
+      position: fixed;       /* 항상 왼쪽 상단에 고정 */
+      top: 20px;
+      left: 20px;
+      font-size: 24px;
+      background-color: transparent;
+      color: #0288d1;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+      transition: transform 0.2s;
+      z-index: 999;          /* 다른 요소 위에 뜨도록 */
+      }
+
+    .back-button:hover {
+    transform: scale(1.2);
+    }
+  </style>
+</head>
+<body>
+  <form action="/board/" method="get">
+    <button class="back-button" title="이전으로 돌아가기">←</button>
+  </form>
+  <!-- 게시글 전체 컨테이너 -->
+  <div class="post-container">
+
+    <!-- 게시글 제목 -->
+    <div class="post-title">{{ post.title }}</div>
+
+    <!-- 작성자 정보 -->
+    <div class="author-info">
+      <div class="author-name">{{ post.author }}</div>
+    </div>
+
+    <!-- 게시글 내용 -->
+    <div class="post-content">
+      {{ post.content }}
+    </div>
+
+    <!-- 수정, 삭제, 목록 버튼 -->
+    <div class="button-group">
+      <form action="/board/modify/{{ post.id }}" method="get">
+        <button type="submit" class="action-btn">수정</button>
+      </form>
+      <form action="/board/delete/{{ post.id }}" method="post">
+        <input type="hidden" name="_method" value="delete">
+        <button class="action-btn">삭제</button>
+      </form>
+      <form action="/board/" method="get">
+        <button class="action-btn">목록</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    function confirmDelete() {
+      if (confirm("정말 이 글을 삭제하시겠습니까?")) {
+        // 삭제 처리 로직 작성 필요 (예: delete.php 호출)
+        alert("삭제되었습니다.");
+        location.href = 'list.html';
+      }
+    }
+  </script>
+</body>
+</html>
