@@ -21,7 +21,8 @@ def load_data():
 
         jobs = [
             Process(target=data.finalarr, args=(shared_list,)),
-            # Process(target=data2.finalarr, args=(shared_list,)),
+            # Process(target=data2.finalarr, args=(shared_list,)), 
+            #미세먼지를 받아오는 사이트가 원인모를 이유로 작동하지 않기에(서비스 키 만료 이슈로 추정됨) 제외한 상태로 실행 (현재 단계에서는 미세먼지 서비스를 제공하고 있지 않으므로 무관하게 작동함)
             Process(target=data3.finalarr, args=(shared_list2,)),         
             Process(target=data4.finalarr, args=(shared_list,)),
             Process(target=data5.finalarr, args=(shared_list,)),
