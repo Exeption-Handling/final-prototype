@@ -297,25 +297,25 @@
     </div>
     <div class="right-panel" onclick="location.href='/weekly_weather/';">
       <h3 id="tomorrowDate">내일</h3>
-        {% if d7[1] == 0 %}
+        {% if d7[0] == 0 %}
         <img src="/images/tenki_mark01_hare.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
-        {% elif d7[1] == 1 %}
+        {% elif d7[0] == 1 %}
         <img src="/images/tenki_mark02_kurmoriame.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
-        {% elif d7[1] == 2 %}
+        {% elif d7[0] == 2 %}
         <img src="/images/bolt.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
-        {% elif d7[1] == 3 %}
+        {% elif d7[0] == 3 %}
         <img src="/images/tenki_mark08_yuki.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
-        {% elif d7[1] == 4 %}
+        {% elif d7[0] == 4 %}
         <img src="/images/tenki_mark03_gouu.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
-        {% elif d7[1] == 5 %}
+        {% elif d7[0] == 5 %}
         <img src="/images/tenki_mark05_kumori.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
-        {% elif d7[1] == 6 %}
+        {% elif d7[0] == 6 %}
         <img src="/images/tenki_mark05_kumori.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
-        {% elif d7[1] == 7 %}
+        {% elif d7[0] == 7 %}
         <img src="/images/tenki_mark10_taifuu.png" alt="오늘의 날씨 아이콘" style="width:200px; height:200px;">
         {% endif %}
-      <p>최저 기온: {{ d7[2] }}℃</p>
-      <p>최고 기온: {{ d7[3] }}℃</p>
+      <p>최저 기온: {{ d7_w[0] }}℃</p>
+      <p>최고 기온: {{ d7_w[1] }}℃</p>
       <button class="sun-btn">이번주 날씨 보기</button>
     </div>
   </main>
