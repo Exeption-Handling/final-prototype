@@ -13,7 +13,7 @@ else:
     times = str(int(now.strftime("%H"))-1) + '00'
 
 url = 'http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getUltraSrtFcst'
-params ={'serviceKey' : 'L8/lsHDixFmS2p34yAH8Q9glQii9ughw2dcw5Hu6SH4gO0rrtNOPEevNbd3nbvW8NzCbwuPPxBHUTqs7aFzLww==', 'pageNo' : '1', 'numOfRows' : '1000', 'dataType' : 'JSON', 'base_date' : date, 'base_time' : times, 'nx' : '68', 'ny' : '107' }
+params ={'serviceKey' : '(serviceKey)', 'pageNo' : '1', 'numOfRows' : '1000', 'dataType' : 'JSON', 'base_date' : date, 'base_time' : times, 'nx' : '68', 'ny' : '107' } # (serviceKey) 부분에 직접 발급받은 키를 입력하여 사용
 ev = Event()
 
 save_path = './OpenSourceBasicProj_Ass/teamproj/output_file6.json'
