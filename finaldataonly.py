@@ -21,8 +21,8 @@ def load_data():
 
         jobs = [
             Process(target=data.finalarr, args=(shared_list,)),
-            # Process(target=data2.finalarr, args=(shared_list,)), 
-            #미세먼지를 받아오는 사이트가 원인모를 이유로 작동하지 않기에(서비스 키 만료 이슈로 추정됨) 제외한 상태로 실행 (현재 단계에서는 미세먼지 서비스를 제공하고 있지 않으므로 무관하게 작동함)
+            # Process(target=data2.finalarr, args=(shared_list,)), # 서비스 키 만료 이슈로 추정되는 원인에 의해 사이트에 정상적인 접속이 안되는 상황.
+            # 현재 미세먼지 요소는 출력에 고려하고 있지 않기에 제외해도 정상적으로 작동함.
             Process(target=data3.finalarr, args=(shared_list2,)),         
             Process(target=data4.finalarr, args=(shared_list,)),
             Process(target=data5.finalarr, args=(shared_list,)),
@@ -153,15 +153,8 @@ def load_data():
             shared_list4 = list(map(float, chain.from_iterable(shared_list4)))
             d7_data1.extend(shared_list3)
             d7_data2.extend(shared_list4)
-            for i in range(7):
-                d7_data.append(d7_data1[i*2])
-                d7_data.append(d7_data1[i*2+1])
-                d7_data.append(d7_data2[i*2])
-                d7_data.append(d7_data2[i*2+1])
 
-            print(d7_data) 
-
-    return merged_data, d7_data
+    return merged_data, d7_data1, d7_data2
         #d7_data = [1일뒤 오전 날씨 아이콘, 1일 뒤 오후 날씨 아이콘, 1일 뒤 최저기온, 1일 뒤 최고기온, ... 7일까지]
 
 if __name__ == '__main__':
