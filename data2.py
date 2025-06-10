@@ -5,7 +5,7 @@ import time
 from multiprocessing import Event
 
 url = 'http://apis.data.go.kr/B552584/ArpltnInforInqireSvc/getCtprvnRltmMesureDnsty'
-params ={'serviceKey' : 'L8/lsHDixFmS2p34yAH8Q9glQii9ughw2dcw5Hu6SH4gO0rrtNOPEevNbd3nbvW8NzCbwuPPxBHUTqs7aFzLww==', 'returnType' : 'json', 'numOfRows' : '100', 'pageNo' : '1', 'sidoName' : '충북', 'ver' : '1.0' }
+params ={'serviceKey' : '(serviceKey)', 'returnType' : 'json', 'numOfRows' : '100', 'pageNo' : '1', 'sidoName' : '충북', 'ver' : '1.0' } # (serviceKey)부분에 자신이 발급받은 Key를 입력하여 사용
 ev = Event()
 
 save_path = './OpenSourceBasicProj_Ass/teamproj/output_file2.json'
