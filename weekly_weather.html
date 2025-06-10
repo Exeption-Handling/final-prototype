@@ -87,26 +87,26 @@
       <h3>{{ weekday_names[i] }}</h3>
       <small>{{ dates[i] }}</small>
       
-      {% if d7[1 + i*4] == 0 %}
+      {% if d7[i*2] == 0 %}
       <img src="/images/tenki_mark01_hare.png">
-      {% elif d7[1 + i*4] == 1 %}
+      {% elif d7[i*2] == 1 %}
       <img src="/images/tenki_mark02_kurmoriame.png">
-      {% elif d7[1 + i*4] == 2 %}
+      {% elif d7[i*2] == 2 %}
       <img src="/images/bolt.png">
-      {% elif d7[1 + i*4] == 3 %}
+      {% elif d7[i*2] == 3 %}
       <img src="/images/tenki_mark08_yuki.png">
-      {% elif d7[1 + i*4] == 4 %}
+      {% elif d7[i*2] == 4 %}
       <img src="/images/tenki_mark03_gouu.png">
-      {% elif d7[1 + i*4] == 5 %}
+      {% elif d7[i*2] == 5 %}
       <img src="/images/tenki_mark05_kumori.png">
-      {% elif d7[1 + i*4] == 6 %}
+      {% elif d7[i*2] == 6 %}
       <img src="/images/tenki_mark05_kumori.png">
-      {% elif d7[1 + i*4] == 7 %}
+      {% elif d7[i*2] == 7 %}
       <img src="/images/tenki_mark10_taifuu.png">
       {% endif %}
       
-      <p>최저 기온: {{ d7[2 + i*4] }}℃</p>
-      <p>최고 기온: {{ d7[3 + i*4] }}℃</p>
+      <p>최저 기온: {{ d7_w[i*2] }}℃</p>
+      <p>최고 기온: {{ d7_w[i*2+1] }}℃</p>
     </div>
     {% endfor %}
   </div>
