@@ -16,11 +16,12 @@ import finaldataonly
 
 ####################################
 ########### 기본 세팅 설정 ###########
-SECRET_KEY = "(secret_key)" # 본인만의 secret_key를 입력해서 사용
+SECRET_KEY = "biccharu!03"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
-DATABASE_URL = "mysql+pymysql://{username}:{password}@{host}/{database}" # 사용하려는 데이터베이스 정보를 입력해서 사용
+DATABASE_URL = "mysql+pymysql://root:sangunhorung-3@localhost/fast_api"
+# DATABASE_URL = "mysql+pymysql://{username}:{password}@{host}/{database}"
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
@@ -124,17 +125,17 @@ def verify_jwt_token(request: Request, db: Session = Depends(get_db)):
 ########### 메인 페이지 ###########
 @api.get("/", response_class=HTMLResponse)
 def title(request : Request, db : Session = Depends(get_db)):
-    data_today, data_7days= finaldataonly.load_data()
+    data_today, icon_7days, weather_7days = finaldataonly.load_data()
     token, user = verify_jwt_token(request, db)
-    return templates.TemplateResponse("title.html", {"request" : request, "token" : token, "user" : user, "today" : data_today, "d7" : data_7days})
+    return templates.TemplateResponse("title.html", {"request" : request, "token" : token, "user" : user, "today" : data_today, "d7" : icon_7days, "d7_w" : weather_7days})
 ########### 메인 페이지 ###########
 
 @api.get("/weekly_weather/", response_class=HTMLResponse)
 def weekly_weather(request : Request, db : Session = Depends(get_db)):
     weekday_names = ["월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일"]
     dates = [(datetime.now() + timedelta(days=i+1)).strftime("%Y-%m-%d") for i in range(7)]
-    data_today, data_7days= finaldataonly.load_data()
-    return templates.TemplateResponse("weekly_weather.html", {"request" : request, "d7" : data_7days, "weekday_names" : weekday_names, "dates" : dates})
+    data_today, icon_7days, weather_7days = finaldataonly.load_data()
+    return templates.TemplateResponse("weekly_weather.html", {"request" : request, "d7" : icon_7days, "d7_w" : weather_7days, "weekday_names" : weekday_names, "dates" : dates})
 
 ########### 회원가입 ###########
 @api.get("/sign_up/", response_class=HTMLResponse) # 회원가입 페이지
@@ -147,12 +148,12 @@ def sign_up(request : Request):
 def process_signing_up(request:Request, Uid:str=Form(...), username:str=Form(...), password:str=Form(...), db:Session=Depends(get_db)):
     new_user = User(Uid=Uid, Username=username, Password=password)
     scan_user = db.query(User).filter(User.Uid == Uid).first()
-    data_today, data_7days= finaldataonly.load_data()
+    data_today, icon_7days, weather_7days = finaldataonly.load_data()
     if scan_user is None:
         db.add(new_user)
         db.commit()
         db.refresh(new_user)
-        return templates.TemplateResponse("title.html", {"request" : request, "today" : data_today, "d7" : data_7days, "signup_success" : f"{username}님, 성공적으로 회원가입이 완료되었습니다."})
+        return templates.TemplateResponse("title.html", {"request" : request, "today" : data_today, "d7" : icon_7days, "d7_w" : weather_7days, "signup_success" : f"{username}님, 성공적으로 회원가입이 완료되었습니다."})
     else: return templates.TemplateResponse("signup.html", {"request" : request, "error_message" : "이미 존재하는 Uid입니다. 다른 Uid를 입력해주세요!"})
 ########### 회원가입 요청 전달 ###########
 
@@ -191,8 +192,8 @@ def logout():
 def mypage(request: Request, db: Session = Depends(get_db)):
     token = request.cookies.get("access_token")
     if not token:
-        data_today, data_7days= finaldataonly.load_data()
-        return templates.TemplateResponse("title.html", {"request":request, "token" : 0, "no_permission":"로그인 후 사용할 수 있는 기능입니다.", "today" : data_today, "d7" : data_7days})
+        data_today, icon_7days, weather_7days = finaldataonly.load_data()
+        return templates.TemplateResponse("title.html", {"request":request, "token" : 0, "no_permission":"로그인 후 사용할 수 있는 기능입니다.", "today" : data_today, "d7" : icon_7days, "d7_w" : weather_7days})
     
     return templates.TemplateResponse("mypage.html", {"request":request})
 
