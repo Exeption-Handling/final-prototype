@@ -8,8 +8,6 @@
 ## Master Node
 - 문서영
 
-##프로젝트 설명 
-
 ## 담당역할
 - 프론트앤드 설계 및 구현
   - 메인 화면, 개인 화면, 게임 화면
@@ -26,7 +24,7 @@
 
 ## 실행 방법
 -서버 연 이후, 상시 사용가능
--만약 서버를 직접 열고 싶다면 해당 파일들을 다운받은 후, main_local.py가 있는 디렉토리에서 uvicorn main_local:api --host 127.0.0.1 --port 443 --ssl-keyfile=key.pem --ssl-certfile=cert.pem --reload을 입력하면 서버가 구동됨.
+-만약 서버를 직접 열고 싶다면 해당 파일들을 다운받은 후, main_local.py가 있는 디렉토리에서 "uvicorn main_local:api --host 127.0.0.1 --port 443 --ssl-keyfile=key.pem --ssl-certfile=cert.pem --reload"을 입력하면 서버가 구동됨.
 
 ## 데모 버전 이슈
 -현재 개인 네트워크를 사용하고 있는 공유기에서 포트포워딩을 완료하여 데이터베이스 접근을 성공했지만 스케쥴/네트워크 이슈로 인해 로컬 데이터베이스를 사용함
