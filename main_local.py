@@ -16,12 +16,11 @@ import finaldataonly
 
 ####################################
 ########### 기본 세팅 설정 ###########
-SECRET_KEY = "biccharu!03"
+SECRET_KEY = "(secret_key)" # 직접 secret_key를 설정하여 사용.
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 60
 
-DATABASE_URL = "mysql+pymysql://root:sangunhorung-3@localhost/fast_api"
-# DATABASE_URL = "mysql+pymysql://{username}:{password}@{host}/{database}"
+DATABASE_URL = "mysql+pymysql://{username}:{password}@{host}/{database}" # 개인 데이터베이스 정보 입력 후 사용
 
 engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
